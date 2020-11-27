@@ -1,5 +1,8 @@
 
-# Rubik's Fortran CLI game
+![](https://github.com/JeffIrwin/rubik/workflows/CI/badge.svg)
+
+# rubik
+Rubik's cube CLI game written in Fortran
 
 ### Clean
     rm *.mod *.o *.exe
