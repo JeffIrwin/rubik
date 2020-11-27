@@ -21,14 +21,62 @@
       ! This module contains subroutines and functions related to
       ! Rubik's cube.
 
+      type rubik_settings
+          integer :: iseed
+          logical :: seed
+      end type rubik_settings
+
       contains
 
 !=======================================================================
 
-      subroutine scramble(moves, n)
+      subroutine load_args(s, io)
+
+      character :: argv*256
+
+      integer :: i, io, argc
+
+      type(rubik_settings) :: s
+
+      io = 0
+      argc = command_argument_count()
+
+      s%seed = .false.
+
+      i = 0
+      do while (i < argc)
+        i = i + 1
+        call get_command_argument(i, argv)
+
+        if (argv == "-s") then
+          i = i + 1
+          call get_command_argument(i, argv)
+
+          s%seed = .true.
+
+          ! TODO:  check formatting
+          read(argv, *) s%iseed
+
+          !print *, 'iseed = ', s%iseed
+
+        else
+          ! TODO:  unknown arg
+        end if
+
+      end do
+
+      end subroutine load_args
+
+!=======================================================================
+
+      subroutine scramble(s, moves, n)
+
       use randmod
+
       integer, allocatable :: moves(:,:)
       integer :: i, n
+
+      type(rubik_settings) :: s
 
       ! This subroutine generates a series of n random moves in array
       ! 'moves'.
@@ -57,10 +105,10 @@
 
       do i = 1, n
           ! radomly pick one of the faces
-          moves(i, 1) = ceiling(random() * 9)
+          moves(i, 1) = ceiling(random(s%seed, s%iseed) * 9)
 
           ! turn the face 90, 180, or 270 degrees (but not 0)
-          moves(i, 2) = ceiling(random() * 3)
+          moves(i, 2) = ceiling(random(s%seed, s%iseed) * 3)
       end do
 
       return
@@ -897,7 +945,7 @@
 
 !=======================================================================
 
-      subroutine game()
+      subroutine game(s)
 
       integer :: state0(26,2), state(26,2), nstate(54), i, n, t1, t2,
      &  values(8), orientedState(26,2)
@@ -906,9 +954,13 @@
 
       character :: cmap*6, cstate(54), sn*10
 
+      type(rubik_settings) :: s
+
       ! This subroutine scrambles a cube, displays the scrambled state,
       ! and challenges the user to solve it by entering moves in text
       ! mode.
+
+      !print *, 'iseed = ', s%iseed
 
       ! solved state
       state0( 1:12, 1) = (/ (i, i = 1, 12) /)
@@ -943,7 +995,7 @@
 
       write(*,*)
 
-      call scramble(moves, 50)
+      call scramble(s, moves, 50)
       call apply(moves, state)
       !call render(moves)
       call orient(state)

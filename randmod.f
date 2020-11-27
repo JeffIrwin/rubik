@@ -3,7 +3,7 @@
 
 	contains
 
-        double precision function random()
+        double precision function random(seed, iseed)
 
 			! This function generates a random real number
 			! between 0 and 1.
@@ -11,8 +11,9 @@
 			implicit none
 
 			integer, dimension(8) :: values
-			integer :: t
+			integer :: iseed, t
 
+			logical :: seed
 			logical, save :: init = .false.
 
 			if (.not. init) then
@@ -27,8 +28,11 @@
 
 				!print *, 't = ', t
 
-				call srand(t)
-				!call srand(0)
+				if (seed) then
+					call srand(iseed)
+				else
+					call srand(t)
+				end if
 
 			end if
 

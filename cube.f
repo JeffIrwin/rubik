@@ -7,7 +7,11 @@
 
       character :: smoves*500, cstate(54), cmap*6
       integer, allocatable :: moves(:,:), rmoves(:,:)
-      integer :: i, state(26,2), j, nstate(54)
+      integer :: io, i, state(26,2), j, nstate(54)
+
+      type(rubik_settings) :: settings
+
+      io = 0
 
       ! state(i,:) = (/ a, b /)
       ! where i is the position, a is the peice, and b is its orientation
@@ -102,7 +106,7 @@
       !edges(11,:) = (/ 3, 4 /)
       !edges(12,:) = (/ 4, 5 /)
 
-      !call scramble(moves, 25)
+      !call scramble(settings, moves, 25)
       !do i = 1, 25
       !    print *, moves(i, :)
       !end do
@@ -120,7 +124,7 @@
       !moves(5,:) = (/ 5, 2 /)
       !moves(6,:) = (/ 6, 2 /)
 
-      !call scramble(moves, 20)
+      !call scramble(settings, moves, 20)
       !call apply(state, moves)
       !call render(moves)
 
@@ -157,7 +161,8 @@
       !write(*,*)
       !call cprint(cstate)
 
-      call game()
+      call load_args(settings, io)
+      call game(settings)
       !call cycleSides()
 
       end program cube
