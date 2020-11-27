@@ -1,0 +1,3 @@
+[submodule "submodules/bat"]
+	path = submodules/bat
+	url = https://github.com/JeffIrwin/bat
