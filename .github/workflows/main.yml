@@ -22,6 +22,5 @@ jobs:
     - name: Clean, build, and test
       run: |
         git submodule update --init --recursive
-        #bash ./test.sh
-        bash ./build.sh
+        bash ./test.sh
 
