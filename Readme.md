@@ -4,6 +4,8 @@
 # rubik
 Rubik's cube CLI game written in Fortran
 
+![](https://raw.githubusercontent.com/JeffIrwin/rubik/main/doc/gameplay-s0.png)
+
 ### Clean
     rm *.mod *.o *.exe
 
