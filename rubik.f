@@ -1,7 +1,10 @@
 
-      module cubemod
+      module rubik
 
       implicit none
+
+      ! This module contains subroutines and functions related to
+      ! Rubik's cube.
 
       ! TO DO:
       ! 
@@ -13,13 +16,10 @@
       !
       ! - shorten z axis in graphic
       !
-      !  in game, add capabilities to display "help", to "undo n"
+      ! - in game, add capabilities to display "help", to "undo n"
       !   series of moves, save game and quit, continue
       !   previously saved game, display title screen, 
       !   enter free play (starting from solved state),
-
-      ! This module contains subroutines and functions related to
-      ! Rubik's cube.
 
       type rubik_settings
           integer :: iseed
@@ -97,7 +97,8 @@
       ! face 9: S (between F and B, same direction as F)
 
       ! amount 0: 0 degrees (not used)
-      ! amount 1: 90 degrees anti-clockwise as if you were facing that side of the cube
+      ! amount 1: 90 degrees anti-clockwise as if you were facing that
+      !           side of the cube
       ! amount 2: 180 degrees
       ! amount 3: 270 degrees (90 degrees clockwise)
 
@@ -254,7 +255,7 @@
       !
       !cmap = 'owrybg'
 
-      ! In the following functions, not that "state" refers to the
+      ! In the following functions, note that "state" refers to the
       ! current configuration of the pieces of the cube.  Rotating the
       ! cube as a whole will not change its state, but turning a single
       ! face will.
@@ -977,22 +978,6 @@
       !call cprint(cstate)
       call multiView(cstate)
       write(*,*)
-
-      !call date_and_time(VALUES = values)
-      !write(*, '(a10)', advance = 'no') 'scrambling'
-      !t1 = 60000 * values(6) + 1000 * values(7) + values(8)
-      !t2 = t1
-
-      !do i = 1, 5
-      !    do while (t2 - t1 < 500)
-      !        call date_and_time(VALUES = values)
-      !        t2 = 60000 * values(6) + 1000 * values(7) + values(8)
-      !    end do
-      !    write(*, '(a1)', advance = 'no') '.'
-      !    call date_and_time(VALUES = values)
-      !    t1 = 60000 * values(6) + 1000 * values(7) + values(8)
-      !end do
-
       write(*,*)
 
       call scramble(s, moves, 50)
@@ -1342,86 +1327,6 @@
 
       call catx(' ', 100, spaces)
 
-      !! right-up-front view
-      !write(*, '(a28)', advance = 'no') spaces
-      !write(*,* ) 'UP'
-      !write(*, '(a18)', advance = 'no') spaces
-      !write(*, '(a27)') '___________________________'
-      !write(*, '(a16)', advance = 'no') spaces
-      !write(*,*) '/        /        /        /|'
-      !write(*, '(a15)', advance = 'no') spaces
-      !write(*,*) '/   '//c(1)//'    /   '//c(2)//'    /   '//c(3)//    &
-      !  '    / |'
-      !write(*, '(a14)', advance = 'no') spaces
-      !write(*,*) '/        /        /        /  |'
-      !write(*, '(a13)', advance = 'no') spaces
-      !write(*,*) '/________/________/________/   |'
-      !write(*, '(a12)', advance = 'no') spaces
-      !write(*,*) '/        /        /        /|   |'
-      !write(*, '(a11)', advance = 'no') spaces
-      !write(*,*) '/   '//c(4)//'    /   '//c(5)//'    /   '//c(6)//    &
-      !  '    / | '//c(18)//' |'
-      !write(*, '(a10)', advance = 'no') spaces
-      !write(*,*) '/        /        /        /  |   |'
-      !write(*, '(a9)', advance = 'no') spaces
-      !write(*,*) '/________/________/________/   |  /|'
-      !write(*, '(a8)', advance = 'no') spaces
-      !write(*,*) '/        /        /        /| '//c(17)//' | / |'
-      !write(*, '(a7)', advance = 'no') spaces
-      !write(*,*) '/   '//c(7)//'    /   '//c(8)//'    /   '//c(9)//    &
-      !  '    / |   |/  |'
-      !write(*, '(a6)', advance = 'no') spaces
-      !write(*,*) '/        /        /        /  |   /   |     RIGHT'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '/________/________/________/   |  /|   |'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|        |        |        | '//c(16)//' | / | '//   &
-      !  c(30)//' |'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|        |        |        |   |/  |  /|'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|   '//c(13)//'    |   '//c(14)//'    |   '//c(15)// &
-      !  '    |   /   | / |'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|        |        |        |  /| '//c(29)//' |/  |'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|        |        |        | / |   /   |'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|________|________|________|/  |  /|   |'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|        |        |        |   | / | '//c(42)//' |'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|        |        |        | '//c(28)//' |/  |  /'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|   '//c(25)//'    |   '//c(26)//'    |   '//c(27)// &
-      !  '    |   /   | /'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|        |        |        |  /| '//c(41)//' |/'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|        |        |        | / |   /'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|________|________|________|/  |  /'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|        |        |        |   | /'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|        |        |        | '//c(40)//' |/'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|   '//c(37)//'    |   '//c(38)//'    |   '//c(39)// &
-      !  '    |   /'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|        |        |        |  /'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|        |        |        | /'
-      !write(*, '(a5)', advance = 'no') spaces
-      !write(*,*) '|________|________|________|/'
-      !write(*,*)
-      !write(*, '(a17)', advance = 'no') spaces
-      !write(*,*) 'FRONT'
-
-
-
-
-
       ! right-up-front view and back-bottom-left view
       write(*,*)
       write(*, '(a28)', advance = 'no') spaces
@@ -1550,8 +1455,6 @@
       write(*,*) '                                              '//c(7)
      &   //'        '//c(4)//'              '//c(1)
 
-      return
-
       end subroutine
 
 !=======================================================================
@@ -1641,5 +1544,5 @@
 
 !=======================================================================
 
-      end module cubemod
+      end module rubik
 

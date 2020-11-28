@@ -11,7 +11,7 @@ args=( "-s 0"
        "-s 1"
      )
 
-exebase=cube
+exebase=rubik
 outdir=.
 expectedoutdir=./expected/
 use_stdout="true"
