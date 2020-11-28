@@ -112,9 +112,7 @@
           moves(i, 2) = ceiling(random(s%seed, s%iseed) * 3)
       end do
 
-      return
-
-      end subroutine
+      end subroutine scramble
 
 !=======================================================================
 
@@ -163,9 +161,7 @@
 
       !print *, smoves
 
-      return
-
-      end subroutine
+      end subroutine render
 
 !=======================================================================
 
@@ -261,8 +257,8 @@
       ! face will.
 
       subroutine cprint(cstate)
-      integer :: state(26, 2), corners(8,3), edges(12,2), i
-      character :: cmap*6, cstate(54)
+      integer :: i
+      character :: cstate(54)
 
       ! This subroutine prints the state of the cube in human readable
       ! form.
@@ -301,14 +297,12 @@
 
       write(*,*)
 
-      return
-
-      end subroutine
+      end subroutine cprint
 
 !=======================================================================
 
       subroutine apply(moves, state)
-      integer :: state(26,2), state0(26,2), i, j, k
+      integer :: state(26,2), state0(26,2), i, j
       integer, allocatable :: moves(:,:)
 
       ! This subroutine applies moves to state and returns the
@@ -502,9 +496,7 @@
 
       end do
 
-      return
-
-      end subroutine
+      end subroutine apply
 
 !=======================================================================
 
@@ -525,15 +517,13 @@
           rmoves(n - i + 1, 2) = rev(moves(i,2) + 1)
       end do
 
-      return
-
-      end subroutine
+      end subroutine reverse
 
 !=======================================================================
 
-      subroutine readState(cstate, cmap)
+      subroutine readState(cstate)
       use textmod
-      character :: cstate(54), line*100, cmap*6
+      character :: cstate(54), line*100
       integer :: i, j, k
 
       ! This subroutine prompts the user to enter the colors on each
@@ -583,9 +573,7 @@
       !           49 50 51
       !           52 53 54
 
-      return
-
-      end subroutine
+      end subroutine readState
 
 !=======================================================================
 
@@ -600,9 +588,7 @@
           nstate(i) = index(cmap, cstate(i))
       end do
 
-      return
-
-      end subroutine
+      end subroutine c2n
 
 !=======================================================================
 
@@ -722,15 +708,13 @@
       state(25,:) = (/ nstate(26), 1 /)
       state(26,:) = (/ nstate(32), 1 /)
 
-      return
-
-      end subroutine
+      end subroutine n2p
 
 !=======================================================================
 
       subroutine p2n(state, nstate)
 
-      integer :: nstate(54), i, j, corners(8,3), edges(12,2), nc(8,3),
+      integer :: nstate(54), i, corners(8,3), edges(12,2), nc(8,3),
      &  ne(12,2), edge(2), corner(3), state(26,2)
 
       ! This subroutine transforms a position state to an integer state.
@@ -828,9 +812,7 @@
 
       !print *, nstate(:)
 
-      return
-
-      end subroutine
+      end subroutine p2n
 
 !=======================================================================
 
@@ -845,17 +827,14 @@
           cstate(i) = cmap(nstate(i): nstate(i))
       end do
 
-      return
-
-      end subroutine
+      end subroutine n2c
 
 !=======================================================================
 
       subroutine readMoves(moves)
       use textmod
-      character :: line*1000, fmap*6, spaces*1000, tmap*3
+      character :: line*1000
       integer, allocatable :: moves(:,:)
-      integer :: i, n, j
 
       ! This subroutine prompts the user to enter a series of moves.
       ! These are converted to an array and stored in moves.
@@ -868,9 +847,7 @@
 
       call convert(line, moves)
 
-      return
-
-      end subroutine
+      end subroutine readMoves
 
 !=======================================================================
 
@@ -940,18 +917,16 @@
 
       end do
 
-      return 
-
-      end subroutine
+      end subroutine convert
 
 !=======================================================================
 
       subroutine game(s)
 
-      integer :: state0(26,2), state(26,2), nstate(54), i, n, t1, t2,
-     &  values(8), orientedState(26,2)
+      integer :: state0(26,2), state(26,2), nstate(54), i, n,
+     &  orientedState(26,2)
 
-      integer, allocatable :: moves(:,:), rmoves(:,:)
+      integer, allocatable :: moves(:,:)
 
       character :: cmap*6, cstate(54), sn*10
 
@@ -1026,20 +1001,14 @@
       write(*,*) "Congratulations!  You just solved Rubik's cryptic" 
      &  //" cube in only ", trim(adjustl(sn)), " moves!"
 
-      return
-
-      end subroutine
+      end subroutine game
 
 !=======================================================================
 
       subroutine advancedMoves(moves)
       use textmod
 
-      character :: line*1000, cmap*6, fmap*18, tmap*3, axes*3, 
-     &  cmapTmp*6, spaces*1000
-
-      integer :: state(26,2), i, j, move(2), rot, times, k, m, n, 
-     &  twoMap(2,6), rotMap(6,3)
+      character :: line*1000
 
       integer, allocatable :: moves(:,:)
 
@@ -1084,20 +1053,16 @@
 
       call convertAdvancedMoves(line, moves)
 
-      return 
-
-      end subroutine
+      end subroutine advancedMoves
 
 !=======================================================================
 
       subroutine convertAdvancedMoves(hmoves, moves)
       use textmod
 
-      character :: line*1000, cmap*6, fmap*18, tmap*3, axes*3, 
-     &  cmapTmp*6, spaces*1000, hmoves*(*)
+      character :: fmap*18, tmap*3, spaces*1000, hmoves*(*)
 
-      integer :: state(26,2), i, j, move(2), rot, times, k, m, n, 
-     &  twoMap(2,6), rotMap(6,3)
+      integer :: i, j, k, m, n, twoMap(2,6), rotMap(6,3)
 
       integer, allocatable :: moves(:,:)
 
@@ -1217,14 +1182,12 @@
 
       end do
 
-      return 
-
-      end subroutine
+      end subroutine convertAdvancedMoves
 
 !=======================================================================
 
       subroutine printCube(w, h, t)
-      integer :: w, h, t, indent, i, j, k, m, n
+      integer :: w, h, t, indent, i, j, k, m
 
       ! This subroutine prints a 3d cube with width w, height h, and
       ! thickness t for each cubie.
@@ -1312,9 +1275,7 @@
 
       end do
 
-      return
-
-      end subroutine
+      end subroutine printCube
 
 !=======================================================================
 
@@ -1455,7 +1416,7 @@
       write(*,*) '                                              '//c(7)
      &   //'        '//c(4)//'              '//c(1)
 
-      end subroutine
+      end subroutine multiView
 
 !=======================================================================
 
@@ -1497,17 +1458,15 @@
           call apply(moves, state)
       end do
 
-      return
-
-      end subroutine
+      end subroutine orient
 
 !=======================================================================
 
       subroutine cycleSides()
 
-      character :: hmoves*20, cmap*6, cstate(54)
+      character :: hmoves*20, cmap*6
 
-      integer :: state(26,2), state0(26,2), i, nstate(54)
+      integer :: state(26,2), state0(26,2), i
 
       integer, allocatable :: moves(:,:)
 
@@ -1529,18 +1488,11 @@
       do while (any(state(:,:) /= state0(:,:)))
           call apply(moves, state)
           i = i + 4
-          !if (i == 832) then
-          !    call p2n(state, nstate)
-          !    call n2c(nstate, cstate, cmap)
-          !    call multiView(cstate)
-          !end if
       end do
 
       print *, i
 
-      return
-
-      end subroutine
+      end subroutine cycleSides
 
 !=======================================================================
 

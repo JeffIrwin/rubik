@@ -38,7 +38,7 @@
 
 			random = rand()
 
-		end function
+		end function random
 
-	end module
+	end module randmod
 
