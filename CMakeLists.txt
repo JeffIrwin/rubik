@@ -14,9 +14,9 @@ project(${PROJECT} Fortran)
 set(SRCDIR "src")
 
 add_executable(${PROJECT}
-	${SRCDIR}/randmod.f
-	${SRCDIR}/textmod.f
+	${SRCDIR}/randmod.f90
+	${SRCDIR}/textmod.f90
 	${SRCDIR}/rubik.f90
-	${SRCDIR}/main.f
+	${SRCDIR}/main.f90
 	)
 
