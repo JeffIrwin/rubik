@@ -29,7 +29,9 @@ To speed things up, you may append any of those six commands with an apostrophe 
 
 Lowercase moves turn a face and its adjacent middle slice, e.g. `r`, `u`, `l`, `d`, `f`, and `b`.
 
-To rotate the whole cube about an axis, enter `x`, `y`, or `z`.  As above, you may also use e.g. `x'`, or `x2` to rotate by other degrees.  This is useful as you may want begin solving with the first layer on top, and then rotate the cube upside-down (`x2` or equivalently `z2`) to finish with the last layer on top.  During other steps, rotating about `y` is helpful to see an edge or corner piece of interest near the front view.
+To rotate the whole cube about an axis, enter `x`, `y`, or `z`.  All axis rotations are left-handed, i.e. `x` rotates on `R`, `y` rotates on `U`, and `z` rotates on `F`.  As above, you may also use e.g. `x'`, or `x2` to rotate by other degrees.  This is useful as you may want begin solving with the first layer on top, and then rotate the cube upside-down (`x2` or equivalently `z2`) to finish with the last layer on top.  During other steps, rotating about `y` is helpful to see an edge or corner piece of interest near the front view.
+
+Slice turns are `M`, `E`, and `S`.  `M` turns the middle layer in the `L` direction, `E` turns the equatorial layer in the `D` direction, and `S` turns the standing layer in the `F` direction.
 
 ## Rubik's algorithms
 This CLI game is almost impossible to play without a physical cube in front of you to aid in muscle memory.  For help, here are some algorithms that can be copy-pasted into gameplay.
