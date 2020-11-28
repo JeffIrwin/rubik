@@ -16,7 +16,7 @@ set(SRCDIR "src")
 add_executable(${PROJECT}
 	${SRCDIR}/randmod.f
 	${SRCDIR}/textmod.f
-	${SRCDIR}/rubik.f
+	${SRCDIR}/rubik.f90
 	${SRCDIR}/main.f
 	)
 

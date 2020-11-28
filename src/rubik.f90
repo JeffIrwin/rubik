@@ -267,23 +267,23 @@
       do i = 1, 54
 
           ! leading spaces for up and down faces
-          if (i ==  1 .or. i ==  4 .or. i ==  7 .or.
-     &        i == 46 .or. i == 49 .or. i == 52) then
+          if (i ==  1 .or. i ==  4 .or. i ==  7 .or. &
+              i == 46 .or. i == 49 .or. i == 52) then
               write(*, '(a7)', advance = 'no') '       '
           end if
 
           ! extra space for front, right, and back faces
-          if (i == 13 .or. i == 16 .or. i == 19 .or. 
-     &        i == 25 .or. i == 28 .or. i == 31 .or. 
-     &        i == 37 .or. i == 40 .or. i == 43) then
+          if (i == 13 .or. i == 16 .or. i == 19 .or.  &
+              i == 25 .or. i == 28 .or. i == 31 .or.  &
+              i == 37 .or. i == 40 .or. i == 43) then
               write(*, '(a1)', advance = 'no') ' '
           end if
 
           write(*, '(a2)', advance = 'no') cstate(i)//' '
 
           ! new line
-          if (i ==  3 .or. i ==  6 .or. i == 21 .or.
-     &        i == 33 .or. i == 48 .or. i == 51) then
+          if (i ==  3 .or. i ==  6 .or. i == 21 .or. &
+              i == 33 .or. i == 48 .or. i == 51) then
               write(*, '(a1)', advance = 'yes') ' '
           end if
 
@@ -530,9 +530,9 @@
       ! side of the cube.  The state is then deduced.
 
       write(*,*)
-      write(*,*) 'Enter the colors on each face as shown in the'       
-     &  //' pattern below.  Spaces and indentation are not read,'      
-     &  //' however new lines must be entered as in the example.'
+      write(*,*) 'Enter the colors on each face as shown in the'  &
+        //' pattern below.  Spaces and indentation are not read,' &
+        //' however new lines must be entered as in the example.'
       write(*,*)
       write(*,*) '       w w w'
       write(*,*) '       w w w'
@@ -594,8 +594,8 @@
 
       subroutine n2p(nstate, state)
 
-      integer :: nstate(54), i, j, corners(8,3), edges(12,2), nc(8,3),
-     &  ne(12,2), edge(2), corner(3), state(26,2)
+      integer :: nstate(54), i, j, corners(8,3), edges(12,2), nc(8,3), &
+        ne(12,2), edge(2), corner(3), state(26,2)
 
       logical*1 :: found
 
@@ -683,16 +683,16 @@
 
         do while (.not. found)
           j = j + 1
-          if (corner(1) == corners(j,1) .and. corner(2) == corners(j,2)
-     &      .and. corner(3) == corners(j,3)) then
+          if (corner(1) == corners(j,1) .and. corner(2) == corners(j,2) &
+            .and. corner(3) == corners(j,3)) then
               found = .true.
               state(i+12,:) = (/ j, 1 /)
-          else if (corner(2) == corners(j,1) .and. corner(3) == 
-     &       corners(j,2) .and. corner(1) == corners(j,3)) then
+          else if (corner(2) == corners(j,1) .and. corner(3) == &
+             corners(j,2) .and. corner(1) == corners(j,3)) then
               found = .true.
               state(i+12,:) = (/ j, 3 /)
-          else if (corner(3) == corners(j,1) .and. corner(1) ==
-     &       corners(j,2) .and. corner(2) == corners(j,3)) then
+          else if (corner(3) == corners(j,1) .and. corner(1) == &
+             corners(j,2) .and. corner(2) == corners(j,3)) then
               found = .true.
               state(i+12,:) = (/ j, 2 /)
           end if
@@ -714,8 +714,8 @@
 
       subroutine p2n(state, nstate)
 
-      integer :: nstate(54), i, corners(8,3), edges(12,2), nc(8,3),
-     &  ne(12,2), edge(2), corner(3), state(26,2)
+      integer :: nstate(54), i, corners(8,3), edges(12,2), nc(8,3), &
+        ne(12,2), edge(2), corner(3), state(26,2)
 
       ! This subroutine transforms a position state to an integer state.
 
@@ -840,8 +840,8 @@
       ! These are converted to an array and stored in moves.
 
       write(*,*)
-      write(*,*) "Enter the moves using the characters R, L, U, D, F,"
-     &  //" B, ', and 2, separated by spaces:"
+      write(*,*) "Enter the moves using the characters R, L, U, D, F," &
+        //" B, ', and 2, separated by spaces:"
       read(*,'(a)') line
       write(*,*)
 
@@ -923,8 +923,8 @@
 
       subroutine game(s)
 
-      integer :: state0(26,2), state(26,2), nstate(54), i, n,
-     &  orientedState(26,2)
+      integer :: state0(26,2), state(26,2), nstate(54), i, n, &
+        orientedState(26,2)
 
       integer, allocatable :: moves(:,:)
 
@@ -998,8 +998,8 @@
       write(sn, '(i10)') n
 
       write(*,*)
-      write(*,*) "Congratulations!  You just solved Rubik's cryptic" 
-     &  //" cube in only ", trim(adjustl(sn)), " moves!"
+      write(*,*) "Congratulations!  You just solved Rubik's cryptic" &
+        //" cube in only ", trim(adjustl(sn)), " moves!"
 
       end subroutine game
 
@@ -1025,22 +1025,22 @@
       if (line(1:1) == 'h') then
 
           write(*,*)
-          write(*,*) 'The faces of the cube are labelled right, up, '
-     &  //'left, down, front, and back.  The case sensitive letters '
-     &  //'R, U, L, D, F, and B will turn their respective face '
-     &  //'clockwise as if you were looking at that face.'
+          write(*,*) 'The faces of the cube are labelled right, up, '   &
+        //'left, down, front, and back.  The case sensitive letters '   &
+        //'R, U, L, D, F, and B will turn their respective face '       &
+        //'clockwise as if you were looking at that face.'
           write(*,*)
-          write(*,*) 'The cube can be solved using only those six '
-     &  //'commands.  You may enter a series of moves on one line, '
-     &  //'separated by spaces (max 1000 characters).'
+          write(*,*) 'The cube can be solved using only those six '     &
+        //'commands.  You may enter a series of moves on one line, '    &
+        //'separated by spaces (max 1000 characters).'
           write(*,*)
-          write(*,*) 'To speed things up, you may append any of those '
-     &  //"six commands with an apostrophe (') to turn the face "
-     &  //'counterclockwise, or a number two (2) to turn the face '
-     &  //'twice.'
+          write(*,*) 'To speed things up, you may append any of those ' &
+        //"six commands with an apostrophe (') to turn the face "       &
+        //'counterclockwise, or a number two (2) to turn the face '     &
+        //'twice.'
           write(*,*)
-          write(*,*) 'To rotate the whole cube about an axis, enter '
-     &  //'x, y, or z.'
+          write(*,*) 'To rotate the whole cube about an axis, enter '   &
+        //'x, y, or z.'
           write(*,*)
 
           ! TODO:  add help on lowercase moves (ruldfb) for twisting two
@@ -1298,8 +1298,8 @@
       write(*, '(a16)', advance = 'no') spaces
       write(*,*) '/        /        /        /|'
       write(*, '(a14)', advance = 'no') spaces
-      write(*,*) c(10)//'/   '//c(1)//'    /   '//c(2)//'    /   '//c(3)
-     &  //'    / |'
+      write(*,*) c(10)//'/   '//c(1)//'    /   '//c(2)//'    /   '//c(3) &
+        //'    / |'
       write(*, '(a14)', advance = 'no') spaces
       write(*,*) '/        /        /        /  |'
       write(*, '(a13)', advance = 'no') spaces
@@ -1307,114 +1307,114 @@
       write(*, '(a12)', advance = 'no') spaces
       write(*,*)'/        /        /        /|   |                    y'
       write(*, '(a10)', advance = 'no') spaces
-      write(*,*) c(11)//'/   '//c(4)//'    /   '//c(5)//'    /   '//c(6)
-     &  //'    / | '//c(18)//' |                     |'
+      write(*,*) c(11)//'/   '//c(4)//'    /   '//c(5)//'    /   '//c(6) &
+        //'    / | '//c(18)//' |                     |'
       write(*, '(a10)', advance = 'no') spaces
-      write(*,*) '/        /        /        /  |   |                  '
-     &  //'   |___ x'
+      write(*,*) '/        /        /        /  |   |                  ' &
+        //'   |___ x'
       write(*, '(a9)', advance = 'no') spaces
-      write(*,*) '/________/________/________/   |  /|                 '
-     &  //'   /'
+      write(*,*) '/________/________/________/   |  /|                 ' &
+        //'   /'
       write(*, '(a8)', advance = 'no') spaces
-      write(*,*) '/        /        /        /| '//c(17)//' | / |      '
-     &  //'             /'
+      write(*,*) '/        /        /        /| '//c(17)//' | / |      ' &
+        //'             /'
       write(*, '(a7)', advance = 'no') spaces
-      write(*,*) '/   '//c(7)//'    /   '//c(8)//'    /   '//c(9)//    
-     &  '    / |   |/  |'//c(31)//'                z'
+      write(*,*) '/   '//c(7)//'    /   '//c(8)//'    /   '//c(9)//     &
+        '    / |   |/  |'//c(31)//'                z'
       write(*, '(a6)', advance = 'no') spaces
       write(*,*) '/        /        /        /  |   /   |     RIGHT'
       write(*, '(a4)', advance = 'no') spaces
       write(*,*) c(12)//'/________/________/________/   |  /|   |'
       write(*, '(a5)', advance = 'no') spaces
-      write(*,*) '|        |        |        | '//c(16)//' | / | '//   
-     &  c(30)//' |'
+      write(*,*) '|        |        |        | '//c(16)//' | / | '//    &
+        c(30)//' |'
       write(*, '(a5)', advance = 'no') spaces
       write(*,*) '|        |        |        |   |/  |  /|'
       write(*, '(a5)', advance = 'no') spaces
-      write(*,*) '|   '//c(13)//'    |   '//c(14)//'    |   '//c(15)// 
-     &  '    |   /   | / |'
+      write(*,*) '|   '//c(13)//'    |   '//c(14)//'    |   '//c(15)//  &
+        '    |   /   | / |'
       write(*, '(a5)', advance = 'no') spaces
-      write(*,*) '|        |        |        |  /| '//c(29)//' |/  |'
-     &  //c(43)
+      write(*,*) '|        |        |        |  /| '//c(29)//' |/  |' &
+        //c(43)
       write(*, '(a5)', advance = 'no') spaces
-      write(*,*) '|        |        |        | / |   /   |          '
-     &   //'          DOWN'
+      write(*,*) '|        |        |        | / |   /   |          ' &
+         //'          DOWN'
       write(*, '(a5)', advance = 'no') spaces
       write(*,*) '|________|________|________|/  |  /|   |'
       write(*, '(a5)', advance = 'no') spaces
-      write(*,*) '|        |        |        |   | / | '//c(42)//' |'  
-     &  //'             '//c(40)//'       '//c(41)
-      write(*,*) '     |        |        |        | '//c(28)//' |/  | '
-     &   //' /          ___________________________ '//c(42)
-      write(*,*) '    '//c(24)//'|   '//c(25)//'    |   '//c(26)//'    '
-     &   //'|   '//c(27)//'    |   /   | /'//c(54)//'         /        '
-     &   //'/        /        /|'
-      write(*,*) '     |        |        |        |  /| '//c(41)//' |/'
-     &   //'         '//c(39)//'/   '//c(48)//'    /   '//c(51)//'   '
-     &   //' /   '//c(54)//'    / |'
-      write(*,*) '     |        |        |        | / |   /          /'
-     &   //'        /        /        /  |'
-      write(*,*) '     |________|________|________|/  |  /          /_'
-     &   //'_______/________/________/   |'
-      write(*,*) '     |        |        |        |   | /'//c(51)//'  '
-     &   //'       /        /        /        /|   |'
-      write(*,*) '     |        |        |        | '//c(40)//' |/    '
-     &   //'     '//c(38)//'/   '//c(47)//'    /   '//c(50)//'    /   '
-     &   //c(53)//'    / | '//c(43)//' |'
-      write(*,*) '    '//c(36)//'|   '//c(37)//'    |   '//c(38)//'   '
-     &   //' |   '//   
-     &   c(39)//'    |   /          /        /        /        /  |   |'
-      write(*,*) '     |        |        |        |  /          /_____'
-     &   //'___/________/________/   |  /|'
-      write(*,*) '     |        |        |        | /          /      '
-     &   //'  /        /        /| '//c(44)//' | / |'
-      write(*,*) '     |________|________|________|/          /   '//  
-     &   c(46)//'    /   '//c(49)//'    /   '//c(52)//'    / |   |/  |'
-     &   //c(30)
-      write(*,*) '         '//c(46)//'        '//c(47)//'           '//
-     &   '  '//c(48)//'          /        '
-     &   //'/        /        /  |   /   |   BACK'
-      write(*,*) '                                         '//c(37)//
-     &   '/________/________/________/   |  /|   |'
-      write(*,*) '                FRONT                     |        |'
-     &   //'        |        | '//c(45)//' | / | '//c(31)//' |'
-      write(*,*) '                                          |        |'
-     &   //'        |        |   |/  |  /|'
-      write(*,*) '                                          |   '//    
-     &  c(36)//'    |   '//c(35)//'    |   '//c(34)//'    |   /   | / |'
-      write(*,*) '                                          |        |'
-     &   //'        |        |  /| '//c(32)//' |/  |'//c(18)
-      write(*,*) '                                          |        |'
-     &   //'        |        | / |   /   |'
-      write(*,*) '                                          |________|'
-     &   //'________|________|/  |  /|   |'
-      write(*,*) '                                          |        |'
-     &   //'        |        |   | / | '//c(19)//' |'
-      write(*,*) '                                          |        |'
-     &   //'        |        | '//c(33)//' |/  |  /'
-      write(*,*) '                                         '//c(25)//
-     &   '|   '//c(24)//'    |   '//c(23)//'    |   '//c(22)//'    |  '
-     &   //' /   | /'//c(1)
-      write(*,*) '                                          |        |'
-     &   //'        |        |  /| '//c(20)//' |/'
-      write(*,*) '                                          |        |'
-     &   //'        |        | / |   /'
-      write(*,*) '                                LEFT      |________|'
-     &   //'________|________|/  |  /'
-      write(*,*) '                                          |        |'
-     &   //'        |        |   | /'//c(2)
-      write(*,*) '                                          |        |'
-     &   //'        |        | '//c(21)//' |/'
-      write(*,*) '                                         '//c(13)//
-     &  '|   '//c(12)//'    |   '//c(11)//'    |   '//c(10)//'    |   /'
-      write(*,*) '                                          |        |'
-     &   //'        |        |  /'
-      write(*,*) '                                          |        |'
-     &   //'        |        | /'
-      write(*,*) '                                          |________|'
-     &   //'________|________|/'
-      write(*,*) '                                              '//c(7)
-     &   //'        '//c(4)//'              '//c(1)
+      write(*,*) '|        |        |        |   | / | '//c(42)//' |'   &
+        //'             '//c(40)//'       '//c(41)
+      write(*,*) '     |        |        |        | '//c(28)//' |/  | ' &
+         //' /          ___________________________ '//c(42)
+      write(*,*) '    '//c(24)//'|   '//c(25)//'    |   '//c(26)//'    ' &
+         //'|   '//c(27)//'    |   /   | /'//c(54)//'         /        ' &
+         //'/        /        /|'
+      write(*,*) '     |        |        |        |  /| '//c(41)//' |/' &
+         //'         '//c(39)//'/   '//c(48)//'    /   '//c(51)//'   ' &
+         //' /   '//c(54)//'    / |'
+      write(*,*) '     |        |        |        | / |   /          /' &
+         //'        /        /        /  |'
+      write(*,*) '     |________|________|________|/  |  /          /_' &
+         //'_______/________/________/   |'
+      write(*,*) '     |        |        |        |   | /'//c(51)//'  ' &
+         //'       /        /        /        /|   |'
+      write(*,*) '     |        |        |        | '//c(40)//' |/    ' &
+         //'     '//c(38)//'/   '//c(47)//'    /   '//c(50)//'    /   ' &
+         //c(53)//'    / | '//c(43)//' |'
+      write(*,*) '    '//c(36)//'|   '//c(37)//'    |   '//c(38)//'   ' &
+         //' |   '//    &
+         c(39)//'    |   /          /        /        /        /  |   |'
+      write(*,*) '     |        |        |        |  /          /_____' &
+         //'___/________/________/   |  /|'
+      write(*,*) '     |        |        |        | /          /      ' &
+         //'  /        /        /| '//c(44)//' | / |'
+      write(*,*) '     |________|________|________|/          /   '//   &
+         c(46)//'    /   '//c(49)//'    /   '//c(52)//'    / |   |/  |' &
+         //c(30)
+      write(*,*) '         '//c(46)//'        '//c(47)//'           '// &
+         '  '//c(48)//'          /        ' &
+         //'/        /        /  |   /   |   BACK'
+      write(*,*) '                                         '//c(37)// &
+         '/________/________/________/   |  /|   |'
+      write(*,*) '                FRONT                     |        |' &
+         //'        |        | '//c(45)//' | / | '//c(31)//' |'
+      write(*,*) '                                          |        |' &
+         //'        |        |   |/  |  /|'
+      write(*,*) '                                          |   '//     &
+        c(36)//'    |   '//c(35)//'    |   '//c(34)//'    |   /   | / |'
+      write(*,*) '                                          |        |' &
+         //'        |        |  /| '//c(32)//' |/  |'//c(18)
+      write(*,*) '                                          |        |' &
+         //'        |        | / |   /   |'
+      write(*,*) '                                          |________|' &
+         //'________|________|/  |  /|   |'
+      write(*,*) '                                          |        |' &
+         //'        |        |   | / | '//c(19)//' |'
+      write(*,*) '                                          |        |' &
+         //'        |        | '//c(33)//' |/  |  /'
+      write(*,*) '                                         '//c(25)// &
+         '|   '//c(24)//'    |   '//c(23)//'    |   '//c(22)//'    |  ' &
+         //' /   | /'//c(1)
+      write(*,*) '                                          |        |' &
+         //'        |        |  /| '//c(20)//' |/'
+      write(*,*) '                                          |        |' &
+         //'        |        | / |   /'
+      write(*,*) '                                LEFT      |________|' &
+         //'________|________|/  |  /'
+      write(*,*) '                                          |        |' &
+         //'        |        |   | /'//c(2)
+      write(*,*) '                                          |        |' &
+         //'        |        | '//c(21)//' |/'
+      write(*,*) '                                         '//c(13)// &
+        '|   '//c(12)//'    |   '//c(11)//'    |   '//c(10)//'    |   /'
+      write(*,*) '                                          |        |' &
+         //'        |        |  /'
+      write(*,*) '                                          |        |' &
+         //'        |        | /'
+      write(*,*) '                                          |________|' &
+         //'________|________|/'
+      write(*,*) '                                              '//c(7) &
+         //'        '//c(4)//'              '//c(1)
 
       end subroutine multiView
 
