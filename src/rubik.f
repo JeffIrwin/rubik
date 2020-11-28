@@ -490,7 +490,7 @@
 
               end if
 
-          state0(:,:) = state(:,:)
+              state0(:,:) = state(:,:)
 
           end do
 

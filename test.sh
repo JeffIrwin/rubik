@@ -9,6 +9,7 @@ outputext=out
 # Extra arguments for each test.  "-s" seeds the random cube scrambler.
 args=( "-s 0"
        "-s 1"
+       "-s 2"
      )
 
 exebase=rubik
