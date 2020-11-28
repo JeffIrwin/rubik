@@ -11,5 +11,12 @@ set(CMAKE_Fortran_COMPILER "gfortran")
 
 project(${PROJECT} Fortran)
 
-add_executable(${PROJECT} randmod.f textmod.f rubik.f main.f)
+set(SRCDIR "src")
+
+add_executable(${PROJECT}
+	${SRCDIR}/randmod.f
+	${SRCDIR}/textmod.f
+	${SRCDIR}/rubik.f
+	${SRCDIR}/main.f
+	)
 
