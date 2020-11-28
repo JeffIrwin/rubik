@@ -6,14 +6,15 @@ Rubik's cube CLI game written in Fortran
 
 ![](https://raw.githubusercontent.com/JeffIrwin/rubik/main/doc/gameplay-s0.png)
 
-### Clean
-    rm *.mod *.o *.exe
+### Download
+    git clone --recursive https://github.com/JeffIrwin/rubik
+    cd rubik
 
 ### Compile
-    make
+    ./build.sh
 
 ### Run
-    time ./cube.exe
+    time ./build/rubik
 
 The prefix `time` is unnecessary, but you might be curious how long it takes you to solve.
 
