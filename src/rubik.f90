@@ -26,6 +26,17 @@ type rubik_settings
 	logical :: seed
 end type rubik_settings
 
+integer, parameter :: &
+	MOVE_R = 1, &
+	MOVE_U = 2, &
+	MOVE_L = 3, &
+	MOVE_D = 4, &
+	MOVE_F = 5, &
+	MOVE_B = 6, &
+	MOVE_M = 7, &
+	MOVE_E = 8, &
+	MOVE_S = 9
+
 contains
 
 !=======================================================================
@@ -73,8 +84,20 @@ subroutine scramble(s, moves, n)
 
 	use randmod
 
-	integer, allocatable :: moves(:,:)
 	integer :: i, n
+	integer, allocatable :: moves(:,:)
+	integer, parameter :: movemap(9) = &
+		[           &
+			MOVE_R, &
+			MOVE_U, &
+			MOVE_L, &
+			MOVE_D, &
+			MOVE_F, &
+			MOVE_B, &
+			MOVE_M, &
+			MOVE_E, &
+			MOVE_S  &
+		]
 
 	type(rubik_settings) :: s
 
@@ -106,7 +129,7 @@ subroutine scramble(s, moves, n)
 
 	do i = 1, n
 		! radomly pick one of the faces
-		moves(i, 1) = ceiling(random(s%seed, s%iseed) * 9)
+		moves(i, 1) = movemap(ceiling(random(s%seed, s%iseed) * 9))
 
 		! turn the face 90, 180, or 270 degrees (but not 0)
 		moves(i, 2) = ceiling(random(s%seed, s%iseed) * 3)
@@ -122,28 +145,31 @@ subroutine render(moves)
 	integer :: i
 
 	! Prints a numerical array of moves 'moves' as a human-readable string
-	! 'smoves'.  Useful for showing the initial scramble.
+	! 'smoves'.  Useful for showing the initial scramble.  Compatible with slice
+	! moves, but not two-layer moves or cube rotations.
+
+	! TODO:  do this with a character array, c.f. fmap
 
 	write(*,*)
 	do i = 1, size(moves, 1)
 		if (moves(i, 2) /= 0) then
-			if (moves(i, 1) == 1) then ! smoves = smoves//'R'
+			if (moves(i, 1) == MOVE_R) then ! smoves = smoves//'R'
 				write(*, '(a1)', advance = 'no') 'R'
-			else if (moves(i, 1) == 2) then ! smoves = smoves//'U'
+			else if (moves(i, 1) == MOVE_U) then ! smoves = smoves//'U'
 				write(*, '(a1)', advance = 'no') 'U'
-			else if (moves(i, 1) == 3) then ! smoves = smoves//'L'
+			else if (moves(i, 1) == MOVE_L) then ! smoves = smoves//'L'
 				write(*, '(a1)', advance = 'no') 'L'
-			else if (moves(i, 1) == 4) then ! smoves = smoves//'D'
+			else if (moves(i, 1) == MOVE_D) then ! smoves = smoves//'D'
 				write(*, '(a1)', advance = 'no') 'D'
-			else if (moves(i, 1) == 5) then ! smoves = smoves//'F'
+			else if (moves(i, 1) == MOVE_F) then ! smoves = smoves//'F'
 				write(*, '(a1)', advance = 'no') 'F'
-			else if (moves(i, 1) == 6) then ! smoves = smoves//'B'
+			else if (moves(i, 1) == MOVE_B) then ! smoves = smoves//'B'
 				write(*, '(a1)', advance = 'no') 'B'
-			else if (moves(i, 1) == 7) then
+			else if (moves(i, 1) == MOVE_M) then
 				write(*, '(a1)', advance = 'no') 'M'
-			else if (moves(i, 1) == 8) then
+			else if (moves(i, 1) == MOVE_E) then
 				write(*, '(a1)', advance = 'no') 'E'
-			else if (moves(i, 1) == 9) then
+			else if (moves(i, 1) == MOVE_S) then
 				write(*, '(a1)', advance = 'no') 'S'
 			end if
 
@@ -306,8 +332,10 @@ subroutine apply(moves, state)
 	integer :: state(26,2), state0(26,2), i, j
 	integer, allocatable :: moves(:,:)
 
-	! This subroutine applies moves to state and returns the
-	! transformed state.
+	! This subroutine applies moves to state and returns the transformed state.
+	! It is overly complicated and would be simpler to directly operate on
+	! cstate rather than state, which would also omit the need for
+	! p2n/n2c/c2n/n2p conversions, but, legacy ...
 
 	! copy original state to temporary array
 	state0(:,:) = state(:,:)
@@ -319,7 +347,7 @@ subroutine apply(moves, state)
 		do j = 1, moves(i,2)
 
 			! branch each possible face
-			if (moves(i,1) == 1) then
+			if (moves(i,1) == MOVE_R) then
 
 				! RIGHT FACE
 				! edge peices
@@ -333,7 +361,7 @@ subroutine apply(moves, state)
 				state(13,:) = state0(17,:)
 				state(16,:) = state0(13,:)
 
-			else if (moves(i,1) == 2) then
+			else if (moves(i,1) == MOVE_U) then
 
 				! UP FACE
 				! edge positions
@@ -354,7 +382,7 @@ subroutine apply(moves, state)
 				state(14,2) = modulo(modulo(state(14,2), 3)+1, 3) + 1
 				state(16,2) = modulo(modulo(state(16,2), 3)+1, 3) + 1
 
-			else if (moves(i,1) == 3) then
+			else if (moves(i,1) == MOVE_L) then
 
 				! LEFT FACE
 				! edge positions
@@ -375,7 +403,7 @@ subroutine apply(moves, state)
 				state(15,2) = modulo(modulo(state(15,2), 3)+1, 3) + 1
 				state(14,2) = modulo(modulo(state(14,2), 3)+1, 3) + 1
 
-			else if (moves(i,1) == 4) then
+			else if (moves(i,1) == MOVE_D) then
 
 				! DOWN FACE
 				! edge positions
@@ -399,7 +427,7 @@ subroutine apply(moves, state)
 				state(17,2) = modulo(state(17,2), 3)+1
 				state(20,2) = modulo(modulo(state(20,2), 3)+1, 3) + 1
 
-			else if (moves(i,1) == 5) then
+			else if (moves(i,1) == MOVE_F) then
 
 				! FRONT FACE
 				! edge positions
@@ -417,7 +445,7 @@ subroutine apply(moves, state)
 				state(20,2) = modulo(state(20,2), 3)+1
 
 
-			else if (moves(i,1) == 6) then
+			else if (moves(i,1) == MOVE_B) then
 
 				! BACK FACE
 				! edge positions
@@ -434,7 +462,7 @@ subroutine apply(moves, state)
 				state(17,2) = modulo(modulo(state(17,2), 3)+1, 3) + 1
 				state(18,2) = modulo(state(18,2), 3)+1
 
-			else if (moves(i,1) == 7) then
+			else if (moves(i,1) == MOVE_M) then
 
 				! M SLICE
 				! edge positions
@@ -453,7 +481,7 @@ subroutine apply(moves, state)
 				state(26,:) = state0(22,:)
 				state(22,:) = state0(25,:)
 
-			else if (moves(i,1) == 8) then
+			else if (moves(i,1) == MOVE_E) then
 
 				! E SLICE
 				! edge positions
@@ -472,7 +500,7 @@ subroutine apply(moves, state)
 				state(26,:) = state0(23,:)
 				state(23,:) = state0(25,:)
 
-			else if (moves(i,1) == 9) then
+			else if (moves(i,1) == MOVE_S) then
 
 				! S SLICE
 				! edge positions
@@ -530,6 +558,9 @@ subroutine readState(cstate)
 
 	! This subroutine prompts the user to enter the colors on each
 	! side of the cube.  The state is then deduced.
+	!
+	! TODO:  handle corrupt entries, chiral cubes, sticker-meddling, etc.
+	! Routines like orient() may hang, cube may be unsolvable.
 
 	write(*,*)
 	write(*,*) 'Enter the colors on each face as shown in the'  &
@@ -726,6 +757,7 @@ subroutine p2n(state, nstate)
 	! This subroutine transforms a position state to an integer state.
 
 	! faces (1-6) on each corner position (1-8)
+	! TODO:  make parameters for these arrays
 	corners(1,:) = (/ 1, 6, 2 /)
 	corners(2,:) = (/ 2, 6, 3 /)
 	corners(3,:) = (/ 2, 3, 5 /)
@@ -873,7 +905,12 @@ subroutine game(s)
 
 	call scramble(s, moves, 50)
 	call apply(moves, state)
+
 	!call render(moves)
+	call p2n(state, nstate)
+	call n2c(nstate, cstate, cmap)
+	!call cprint(cstate)
+
 	call orient(state)
 	orientedState(:,:) = state(:,:)
 	call p2n(state, nstate)
@@ -968,7 +1005,7 @@ subroutine convertAdvancedMoves(hmoves, moves)
 
 	character :: fmap*18, tmap*3, spaces*1000, hmoves*(*)
 
-	integer :: i, j, k, m, n, twoMap(2,6), rotMap(6,3)
+	integer :: i, j, k, m, n, twoMap(4,6), rotMap(6,3)
 
 	integer, allocatable :: moves(:,:)
 
@@ -976,24 +1013,34 @@ subroutine convertAdvancedMoves(hmoves, moves)
 	! readMoves and apply.  Lowercase moves, cube rotations, slice
 	! moves, undo, etc. are allowed.
 
-	! map face letters to numbers
-	fmap = 'RULDFBMESruldfbxyz'
+	! map face letters to numbers.  TODO:  must be consistent ordering based on
+	! parameters.  Make character params too.  Make this string const?
+	fmap = '         ruldfbxyz'
+	fmap(MOVE_R: MOVE_R) = 'R'
+	fmap(MOVE_U: MOVE_U) = 'U'
+	fmap(MOVE_L: MOVE_L) = 'L'
+	fmap(MOVE_D: MOVE_D) = 'D'
+	fmap(MOVE_F: MOVE_F) = 'F'
+	fmap(MOVE_B: MOVE_B) = 'B'
+	fmap(MOVE_M: MOVE_M) = 'M'
+	fmap(MOVE_E: MOVE_E) = 'E'
+	fmap(MOVE_S: MOVE_S) = 'S'
 
 	! map two layer moves to individual slice moves
 	! columns 1 indicates the face to be turned,
 	! columns 2 indicates the twist amount
-	twoMap(:,1) = (/ 7, 3 /)
-	twoMap(:,2) = (/ 8, 3 /)
-	twoMap(:,3) = (/ 7, 1 /)
-	twoMap(:,4) = (/ 8, 1 /)
-	twoMap(:,5) = (/ 9, 1 /)
-	twoMap(:,6) = (/ 9, 3 /)
+	twoMap(:,1) = (/ MOVE_R, 1, MOVE_M, 3/)
+	twoMap(:,2) = (/ MOVE_U, 1, MOVE_E, 3/)
+	twoMap(:,3) = (/ MOVE_L, 1, MOVE_M, 1/)
+	twoMap(:,4) = (/ MOVE_D, 1, MOVE_E, 1/)
+	twoMap(:,5) = (/ MOVE_F, 1, MOVE_S, 1/)
+	twoMap(:,6) = (/ MOVE_B, 1, MOVE_S, 3/)
 
 	! map cube rotations to individual slices (odd columns) and twist
 	! amounts (even columns)
-	rotMap(:,1) = (/ 1, 1, 7, 3, 3, 3 /)
-	rotMap(:,2) = (/ 2, 1, 8, 3, 4, 3 /)
-	rotMap(:,3) = (/ 5, 1, 9, 1, 6, 3 /)
+	rotMap(:,1) = (/ MOVE_R, 1, MOVE_M, 3, MOVE_L, 3 /)
+	rotMap(:,2) = (/ MOVE_U, 1, MOVE_E, 3, MOVE_D, 3 /)
+	rotMap(:,3) = (/ MOVE_F, 1, MOVE_S, 1, MOVE_B, 3 /)
 
 	! map twist amount to numbers
 	tmap = "'2 "
@@ -1061,12 +1108,15 @@ subroutine convertAdvancedMoves(hmoves, moves)
 
 		else if (k > 9 .and. k <= 15) then
 
-			! two layer moves
-			moves(i,1) = k - 9
-			moves(i,2) = m
+			! These are based on the convention of 'ruldfb' appearing in the
+			! same order as 'RULDFB' and not easily parameterized.
 
-			moves(i+1,1) = twoMap(1,k-9)
-			moves(i+1,2) = modulo(m*twoMap(2,k-9), 4)
+			! two layer moves
+			moves(i  ,1) = twoMap(1,k-9)
+			moves(i  ,2) = modulo(m*twoMap(2,k-9), 4)
+
+			moves(i+1,1) = twoMap(3,k-9)
+			moves(i+1,2) = modulo(m*twoMap(4,k-9), 4)
 
 			i = i + 2
 
