@@ -121,8 +121,8 @@ subroutine render(moves)
 	integer, allocatable :: moves(:,:)
 	integer :: i
 
-	! This subroutine prints a numerical array of moves 'moves' as a
-	! human-readable string 'smoves'.
+	! Prints a numerical array of moves 'moves' as a human-readable string
+	! 'smoves'.  Useful for showing the initial scramble.
 
 	write(*,*)
 	do i = 1, size(moves, 1)
@@ -261,8 +261,8 @@ subroutine cprint(cstate)
 	integer :: i
 	character :: cstate(54)
 
-	! This subroutine prints the state of the cube in human readable
-	! form.
+	! Prints the state of the cube in human readable form.  Could be useful for
+	! narrow terminals.
 
 	write(*,*)
 	do i = 1, 54
@@ -837,96 +837,6 @@ end subroutine n2c
 
 !=======================================================================
 
-subroutine readMoves(moves)
-	use textmod
-	character :: line*1000
-	integer, allocatable :: moves(:,:)
-
-	! This subroutine prompts the user to enter a series of moves.
-	! These are converted to an array and stored in moves.
-
-	write(*,*)
-	write(*,*) "Enter the moves using the characters R, L, U, D, F," &
-		//" B, ', and 2, separated by spaces:"
-	read(*,'(a)') line
-	write(*,*)
-
-	call convert(line, moves)
-
-end subroutine readMoves
-
-!=======================================================================
-
-subroutine convert(hmoves, moves)
-	use textmod
-	character :: hmoves*1000, fmap*6, tmap*3, spaces*1000
-	integer, allocatable :: moves(:,:)
-	integer :: i, j, n
-
-	! This subroutine converts human readable moves to an array of
-	! moves.
-
-	! map face letters to numbers
-	fmap = 'RULDFB'
-
-	! map twist amount to numbers
-	tmap = "'2 "
-
-	call catx(' ', 1000, spaces)
-
-	! determine number of moves
-	n = 0
-	do i = 1, len(trim(hmoves))
-		if (isAlpha(hmoves(i:i))) then
-			n = n + 1
-		end if
-	end do
-
-	! convert human readable moves to array
-	allocate(moves(n,2))
-	j = 1
-	do i = 1, n
-
-		! skip to next move
-		do while(.not. isAlpha(hmoves(j:j)))
-			j = j + 1
-		end do
-
-		! determine which face is turned
-		moves(i,1) = index(fmap, hmoves(j:j))
-
-		if (moves(i,1) == 0) then
-			write(*,*)
-			write(*,'(a36,i4)')'ERROR: unrecognized input in column ',j
-			write(*,*)
-			write(*,*) trim(hmoves)
-			write(*,*) spaces(1: j - 1)//'^'
-			write(*,*)
-			stop
-		end if
-
-		j = j + 1
-
-		moves(i,2) = index(tmap, hmoves(j:j))
-
-		if (moves(i,2) == 0) then
-			write(*,*)
-			write(*,'(a36,i4)')'ERROR: unrecognized input in column ',j
-			write(*,*)
-			write(*,*) trim(hmoves)
-			write(*,*) spaces(1: j - 1)//'^'
-			write(*,*)
-			stop
-		end if
-
-		j = j + 1
-
-	end do
-
-end subroutine convert
-
-!=======================================================================
-
 subroutine game(s)
 
 	integer :: state0(26,2), state(26,2), nstate(54), i, n, &
@@ -973,18 +883,6 @@ subroutine game(s)
 	n = 0
 
 	do while (any(orientedState /= state0))
-
-		!! The following block provides basic functionality for turning
-		!! individual faces, but does not allow cube rotations,
-		!! "lowercase" moves, slice moves, etc.
-		!deallocate(moves)
-		!call readMoves(moves)
-		!call apply(moves, state)
-		!call p2n(state, nstate)
-		!call n2c(nstate, cstate, cmap)
-		!!call cprint(cstate)
-		!call multiView(cstate)
-		!n = n + size(moves, 1)
 
 		!print *, cmap
 		deallocate(moves)
@@ -1194,100 +1092,6 @@ end subroutine convertAdvancedMoves
 
 !=======================================================================
 
-subroutine printCube(w, h, t)
-
-	integer :: w, h, t, indent, i, j, k, m
-
-	! This subroutine prints a 3d cube with width w, height h, and
-	! thickness t for each cubie.
-
-	! This subroutine will be extremely difficult to write for any
-	! general w, h, and t.
-
-	!w = 6
-	!h = 4
-	!t = 3
-
-	indent = 8
-
-	! UP BACK EDGE
-	! leading spaces
-	do i = 1, indent + 3*w
-		write(*, '(a1)', advance = 'no') ' '
-	end do
-
-	! edge
-	do i = 1, 3 * (w + 1)
-		write(*, '(a1)', advance = 'no') '_'
-	end do
-
-	write(*,*)
-
-	! UP FACE AND UPPER PART OF RIGHT FACE
-	do m = 1, 3
-
-		! BACK ROW
-		do j = 1, t
-
-			! leading space
-			do i = 1, indent + 3*w - j - t * (m - 1)
-				write(*, '(a1)', advance = 'no') ' '
-			end do
-
-			do k = 1, 3
-				write(*, '(a1)', advance = 'no') '/'
-				do i = 1, w
-					if (j == t) then
-						write(*, '(a1)', advance = 'no') '_'
-					else
-						write(*, '(a1)', advance = 'no') ' '
-					end if
-				end do
-			end do
-
-			! up right edge
-			write(*, '(a1)', advance = 'no') '/'
-
-			do i = 1, j - 1
-				write(*, '(a1)', advance = 'no') ' '
-			end do
-
-			! right face vertical edges
-			if (j == t - 1 .and. m == 2) then
-				write(*, '(a1)', advance = 'no') '/'
-			else
-				write(*, '(a1)', advance = 'no') '|'
-			end if
-			! j == 5 (== t - 1), m == 2
-
-			do i = 1, m - 1
-				do k = 1, t - 1
-					if (j + k + (i-1)*t == h + 1) then
-						! right face horizontal edges
-						write(*, '(a1)', advance = 'no') '/'
-					else
-						write(*, '(a1)', advance = 'no') ' '
-					end if
-				end do
-				! back right edge
-				if (j == 2 .and. m == 3 .and. i == 1) then
-					write(*, '(a1)', advance = 'no') '/'
-				else
-					write(*, '(a1)', advance = 'no') '|'
-				end if
-				!write(*, '(i1)', advance = 'no') m
-			end do
-
-			write(*,*)
-
-		end do
-
-	end do
-
-end subroutine printCube
-
-!=======================================================================
-
 subroutine multiView(c)
 
 	use textmod
@@ -1469,40 +1273,6 @@ subroutine orient(state)
 	end do
 
 end subroutine orient
-
-!=======================================================================
-
-subroutine cycleSides()
-
-	character :: hmoves*20, cmap*6
-
-	integer :: state(26,2), state0(26,2), i
-
-	integer, allocatable :: moves(:,:)
-
-	! solved state
-	state0( 1:12, 1) = (/ (i, i = 1, 12) /)
-	state0(13:20, 1) = (/ (i, i = 1,  8) /)
-	state0(21:26, 1) = (/ (i, i = 1,  6) /)
-	state0(:,2) = 1
-	state(:,:) = state0(:,:)
-
-	cmap = 'owrybg'
-
-	hmoves = "R L' B F' R' L B' F"
-	call convertAdvancedMoves(hmoves, moves)
-	call apply(moves, state)
-
-	i = 4
-
-	do while (any(state(:,:) /= state0(:,:)))
-		call apply(moves, state)
-		i = i + 4
-	end do
-
-	print *, i
-
-end subroutine cycleSides
 
 !=======================================================================
 
